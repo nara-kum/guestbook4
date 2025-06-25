@@ -2,36 +2,39 @@ package com.javaex.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.javaex.dao.GuestbookDAO;
+import com.javaex.Service.GuestbookService;
 import com.javaex.vo.GuestbookVO;
 
 @Controller
 public class GuestbookController {
 
 	// 필드
+	@Autowired
+	private GuestbookService guestbookService;
 
 	// 생성자
 
 	// 메소드-gs
-
+	
 	// 메소드일반
-
+	
 	// 방명록 리스트 전체 가져오기
 	@RequestMapping(value = "/list", method = { RequestMethod.GET, RequestMethod.POST })
 	public String list(Model model) {
 		System.out.println("GuestbookController.list()");
-
-		GuestbookDAO guestbookDAO = new GuestbookDAO();
-		List<GuestbookVO> guestbookList = guestbookDAO.guestbookSelect();
-
-		System.out.println(guestbookList);
-
+		
+		//service
+		//GuestbookService guestbookService = new GuestbookService();
+		//guestbookService 메모리에 올려주세요 -> 주소를 주입해주세요
+		List<GuestbookVO> guestbookList = guestbookService.exeGetGuestbookList();
+		
 		// model
 		// D.S의 request의 attribute영역에 "gList" 이름으로 guestbookList 넣어줘
 		model.addAttribute("gList", guestbookList);
@@ -47,6 +50,7 @@ public class GuestbookController {
 		// D.S야 파라미터의 값을 꺼내줘
 		// GuestbookVO로 묶어줘
 		System.out.println("GuestbookController.add()");
+		System.out.println(guestbookVO);
 		/*
 		 * D.S가 하는일
 		 * 
@@ -65,11 +69,8 @@ public class GuestbookController {
 		 * 
 		 */
 		
-		System.out.println(guestbookVO);
-
-		GuestbookDAO guestbookDAO = new GuestbookDAO();
-		int count = guestbookDAO.guestbookInsert(guestbookVO);
-
+		guestbookService.exeGetGuestbookAdd(guestbookVO);
+		
 		//redirect
 		return "redirect:/list";
 	}
@@ -107,8 +108,7 @@ public class GuestbookController {
 		public String remove(@ModelAttribute GuestbookVO guestbookVO) {
 			System.out.println("GuestbookController.remove()");
 			
-			GuestbookDAO guestbookDAO = new GuestbookDAO(); 
-			guestbookDAO.guestbookDelete(guestbookVO);
+			guestbookService.exeGuestbookRemove(guestbookVO);//!!주소!!만 줘
 			
 			return "redirect:/list";
 		}
