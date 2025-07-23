@@ -8,7 +8,7 @@
 			<title>guestbook addlist</title>
 		</head>
 		<body>
-		
+		v1
 			<form action="${pageContext.request.contextPath}/add" method="get">
 				<table border="1" width="540px">
 					<tr>
